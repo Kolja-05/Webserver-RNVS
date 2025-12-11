@@ -1,5 +1,6 @@
 #include <asm-generic/socket.h>
 #include <bits/types/stack_t.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,6 +47,21 @@ int find_free_slot (dynamic_content_t * content_table, size_t len) {
     }
     return -1;
 }
+
+int is_numerical(const char *s) {
+    if (!s || *s == '\0') {
+        return 0;
+    }
+    while (*s != '\0') {
+        if (!isdigit((char) *s)) {
+            return 0;
+        }
+        s++;
+    }
+    return 1;
+}
+
+
 // handles PUT requests
 // inputs: client_socket, request, dynamic contetn of our webserver, the len of the content table, the buffer of the packet stream, the len of the buffer as a pointer
 // returns: a string literal with the responscode e.g. "201 Created"
@@ -67,6 +83,7 @@ const char* handle_put(int client_fd, http_request_t *request, dynamic_content_t
 
     const char* content_len_string = find_header_value_by_key(request->headers, "Content-Length");
     if (content_len_string == NULL) return  "400 Bad Request";
+    if(!is_numerical(content_len_string)) return  "400 Bad Request";
     int content_len = atoi(content_len_string);
     if (content_len <= 0) return "400 Bad Request";
     if (content_len > MAX_BODY) return "413 Request Entity Too Large";
