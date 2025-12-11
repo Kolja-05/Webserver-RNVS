@@ -19,6 +19,6 @@ universityproject in the course *Rechnernetze und Verteilte Systeme (Computernet
    echo -e "GET /static/foo HTTP/1.0\r\n\r\n" | nc localhost 1234
 5. URIs for PUT/DELETE  have to start with /dynamic/
   ```bash
-  echo -e "PUT /dynamic/foo HTTP/1.0\r\nContent-Length: 3\r\n\r\nfoo" | nc localhost 1234
+   echo -e "PUT /dynamic/foo HTTP/1.0\r\nContent-Length: 3\r\n\r\nfoo" | nc localhost 1234
 
 
